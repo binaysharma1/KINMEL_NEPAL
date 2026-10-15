@@ -1,55 +1,94 @@
-# 🛒 MERN E-Commerce App
+# KinMel Nepal
 
-A simple eCommerce web application built using the MERN stack.
+Online shopping for Nepal — fashion for Men, Women and Kids with cart,
+orders and digital payments (Khalti, eSewa, cash on delivery), plus an
+admin dashboard for managing products and orders.
 
----
+## Features
 
-## 🚀 Live Demo
-Frontend: https://ecommerce-frontend-hazel-three.vercel.app <br>
-Backend: https://ecommerce-backend-omega-mocha.vercel.app  <br>
-Admin : https://ecommerce-admin-theta-lime.vercel.app
+- Browse and search 1000+ products with category and price filters
+- User registration, login (JWT) and persistent cart
+- Checkout with cash on delivery, Khalti or eSewa
+- Order history and status tracking
+- Admin panel: add/update/remove products, view and manage orders
 
----
+## Tech Stack
 
-## 📌 Features
-- User authentication (Login/Register)
-- Product listing
-- Add to cart
-- Order system
-- Online payment (Khalti / eSewa)
+| Layer    | Technology                     |
+|----------|--------------------------------|
+| Frontend | React 19, Vite, Tailwind CSS   |
+| Admin    | React 19, Vite, Tailwind CSS   |
+| Backend  | Node.js, Express 5             |
+| Database | MongoDB (Mongoose)             |
+| Auth     | JWT (bcrypt password hashing)  |
+| Payments | Khalti ePayment, eSewa         |
 
----
+## Project Structure
 
-## 🧑‍💻 Tech Stack
-- React.js
-- Node.js + Express
-- MongoDB
-- JWT Authentication
+```
+E-commerce/
+├── Backend/    # Express API (port 5000)
+├── Frontend/   # Customer storefront (port 5173)
+└── Admin/      # Admin dashboard (port 5174)
+```
 
----
+## Getting Started
 
-## ⚙️ Setup
+Requirements: Node.js 18+, MongoDB (local or Atlas).
 
-### Backend
+**1. Backend**
 
-cd backend  <br>
-npm install  <br>
-npm run server  <br>
+```bash
+cd Backend
+npm install
+cp .env.example .env   # then fill in values (see below)
+node server.js
+```
 
-### Frontend
+**2. Storefront**
 
-cd frontend  <br>
-npm install  <br>
-npm run dev  <br>
+```bash
+cd Frontend
+npm install
+npm run dev     # http://localhost:5173
+```
 
-### Admin
+**3. Admin panel**
 
-cd Admin  <br>
-npm install  <br>
-npm run dev  <br>
+```bash
+cd Admin
+npm install
+npm run dev     # http://localhost:5174
+```
 
+## Environment Variables
 
-## 🙌 Author
-Krish Bhandari  <br>
-GitHub: https://github.com/krishbhandari013
+Backend (`Backend/.env`):
 
+| Variable                        | Purpose                                |
+|---------------------------------|----------------------------------------|
+| `PORT`                          | API port (default `5000`)              |
+| `MONGoDB_URL`                   | MongoDB connection string (no db name) |
+| `JWT_SECRET`                    | Secret for signing tokens              |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD`| Admin panel credentials                |
+| `FRONTEND_URL` / `ADMIN_URL`    | Allowed CORS origins                   |
+| `KHALTI_SECRET_KEY`             | Khalti payment key                     |
+| `ESEWA_MERCHANT_CODE`           | eSewa merchant code                    |
+| `DELIVERY_FEE` / `TAX_RATE`     | Order pricing rules                    |
+
+Frontends (`Frontend/.env`, `Admin/.env`):
+
+| Variable           | Purpose              |
+|--------------------|----------------------|
+| `VITE_BACKEND_URL` | Backend API base URL |
+
+Seed demo products: `cd Backend && node seedProducts.js`
+
+## Contributing
+
+Branches per feature, pull requests into `main`. See open PRs for the
+current convention.
+
+## License
+
+MIT (or your chosen license — add a `LICENSE` file to make this binding).
