@@ -75,3 +75,13 @@ export const cartGetSchema = validate(Joi.object({
 export const cartClearSchema = validate(Joi.object({
   userId: objectId,
 }));
+
+export const chatSchema = validate(Joi.object({
+  message: Joi.string().trim().min(1).max(2000).required(),
+  // Recent turns so the assistant keeps context across requests.
+  history: Joi.array().items(Joi.object({
+    sender: Joi.string().valid('user', 'bot').required(),
+    text: Joi.string().max(2000).required(),
+  })).max(40).optional(),
+  sessionId: Joi.string().max(100).optional(),
+}).unknown(true));

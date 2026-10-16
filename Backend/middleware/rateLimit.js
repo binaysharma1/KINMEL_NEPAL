@@ -27,3 +27,17 @@ const authLimiter = rateLimit({
 
 export default limiter;
 export { authLimiter };
+
+// Chat is authenticated but still expensive per call, so it gets its own budget.
+const chatLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: process.env.NODE_ENV === 'production' ? 20 : 60,
+  message: {
+    success: false,
+    message: "You're sending messages too quickly. Give it a moment."
+  },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+export { chatLimiter };

@@ -14,6 +14,7 @@ import orderRoute from './routes/orderRoute.js';
 import cartRoute from './routes/cartRoute.js';
 import paymentRoute from './routes/paymentRoute.js';
 import contactRoute from './routes/contactRoute.js';
+import chatRoute from './routes/chatRoute.js';
 import helmet from 'helmet';
 
 
@@ -65,6 +66,8 @@ app.use('/api/order', orderRoute);
 app.use('/api/cart', cartRoute);
 app.use('/api/payment', paymentRoute);
 app.use('/api', contactRoute);
+// Assistant: JWT-gated, then forwarded to the FastAPI service.
+app.use('/api/chat', chatRoute);
 
 // Safe ping endpoint
 app.get('/', (req, res) => {
