@@ -117,7 +117,7 @@ const adminLogin = async (req, res) => {
   }
 }
 
-// ✅ NEW: Get user by token
+// NEW: Get user by token
 const getUserByToken = async (req, res) => {
   try {
     const { token } = req.headers;
@@ -149,7 +149,7 @@ const getUserByToken = async (req, res) => {
   }
 };
 
-// ✅ NEW: Update user cart
+//  NEW: Update user cart
 const updateCart = async (req, res) => {
   try {
     const { userId, cartData } = req.body;
@@ -188,7 +188,7 @@ const updateCart = async (req, res) => {
   }
 };
 
-// ✅ NEW: Get user cart
+//  NEW: Get user cart
 const getCart = async (req, res) => {
   try {
     const { userId } = req.body;
@@ -222,7 +222,7 @@ const getCart = async (req, res) => {
   }
 };
 
-// ✅ NEW: Clear user cart
+//  NEW: Clear user cart
 const clearCart = async (req, res) => {
   try {
     const { userId } = req.body;

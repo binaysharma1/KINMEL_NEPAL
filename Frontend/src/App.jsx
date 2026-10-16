@@ -14,6 +14,7 @@ import Navbar from "./components/Navbar";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from "./components/Footer.jsx";
+import ChatbotButton from "./components/ChatbotButton.jsx";
 import { Toaster } from 'react-hot-toast';
 import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 import PaymentFailure from "./pages/PaymentFailure.jsx";
@@ -56,6 +57,7 @@ export default function App() {
         
       </Routes> 
   <Footer></Footer>
+  <ChatbotButton />
     </div>
   );
 }
