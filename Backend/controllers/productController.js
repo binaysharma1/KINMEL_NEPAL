@@ -233,10 +233,7 @@ const updateProduct = async (req, res) => {
       }
     }
 
-    // =============================================
-    // 🔴 THIS IS WHERE YOU ADD THE NEW CODE 🔴
-    // Handle new image uploads from memory
-    // =============================================
+    
     let newImageUrls = []
     
     // Helper function to upload a single file (local disk in dev, Cloudinary otherwise)
@@ -270,10 +267,7 @@ const updateProduct = async (req, res) => {
         console.log(`✅ Uploaded ${newImageUrls.length} new images`)
       }
     }
-    // =============================================
-    // 🔴 END OF NEW CODE 🔴
-    // =============================================
-
+    
     // Combine existing and new images
     const allImages = [...existingImageUrls, ...newImageUrls]
 
