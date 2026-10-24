@@ -3,6 +3,7 @@ import { NavLink, Link, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { ShopContext } from '../context/ShopContext';
 import toast from "react-hot-toast";
+import { Sun, Moon } from 'lucide-react';
 
 // Inside your component
 
@@ -16,13 +17,29 @@ export default function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved) return saved === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
   const { cartCount } = useContext(ShopContext);
   
   const profileRef = useRef();
   const searchRef = useRef();
   const navigate = useNavigate();
 
-  // Close profile dropdown when clicking outside
+  // Sync theme class to <html> element
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark]);
+
+  const toggleTheme = () => setIsDark(prev => !prev);
   useEffect(() => {
     function handleClickOutside(e) {
       if (profileRef.current && !profileRef.current.contains(e.target)) {
@@ -69,7 +86,7 @@ export default function Navbar() {
   return (
     <>
       {/* Navbar */}
-      <nav className="fixed top-0 left-1/2 -translate-x-1/2 w-full  bg-white shadow-sm z-50">
+      <nav className="fixed top-0 left-1/2 -translate-x-1/2 w-full  bg-white dark:bg-dark.bg shadow-sm z-50">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -91,8 +108,8 @@ export default function Navbar() {
                     className={({ isActive }) =>
                       `relative pb-1 transition-colors duration-200 ${
                         isActive
-                          ? "text-black font-semibold"
-                          : "text-gray-600 hover:text-black"
+                          ? "text-black font-semibold dark:text-light.text"
+                          : "text-gray-600 hover:text-black dark:text-light.muted dark:hover:text-light.text"
                       }`
                     }
                   >
@@ -100,7 +117,7 @@ export default function Navbar() {
                       <>
                         {item.name}
                         {isActive && (
-                          <span className="absolute left-0 bottom-0 w-full h-[2px] bg-black"></span>
+                          <span className="absolute left-0 bottom-0 w-full h-[2px] bg-black dark:bg-light.text"></span>
                         )}
                       </>
                     )}
@@ -116,7 +133,25 @@ export default function Navbar() {
                 onClick={handleSearchClick}
                 className="search-trigger hover:scale-110 transition-transform duration-200"
               >
-                <img src={assets.search_icon} alt="search" className="w-5" />
+                <img src={assets.search_icon} alt="search" className="navbar-icon w-5" />
+              </button>
+
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="relative w-9 h-5 rounded-full bg-gray-200 dark:bg-dark.border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
+                aria-label="Toggle dark mode"
+              >
+                <div className="relative overflow-hidden rounded-full w-full h-full">
+                  <div className="absolute inset-0 flex items-center justify-center transition-transform duration-300"
+                       style={{ transform: isDark ? 'translateX(100%)' : 'translateX(0)' }}>
+                    <Moon className="w-3 h-3 text-yellow-500" />
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center transition-transform duration-300"
+                       style={{ transform: isDark ? 'translateX(0)' : 'translateX(-100%)' }}>
+                    <Sun className="w-3 h-3 text-orange-500" />
+                  </div>
+                </div>
               </button>
 
               {/* Profile */}
@@ -125,22 +160,22 @@ export default function Navbar() {
     onClick={() => setShowProfile(!showProfile)}
     className="hover:scale-110 transition-transform duration-200"
   >
-    <img src={assets.profile_icon} alt="profile" className="w-5" />
+    <img src={assets.profile_icon} alt="profile" className="navbar-icon w-5" />
   </button>
   
   {showProfile && (
-    <div className="absolute right-0 mt-3 w-48 bg-white shadow-lg rounded-md py-2 text-sm border border-gray-100">
+    <div className="absolute right-0 mt-3 w-48 bg-white dark:bg-dark.panel shadow-lg rounded-md py-2 text-sm border border-dark.border dark:text-light.text">
       {localStorage.getItem('userToken') ? (
         // ✅ LOGGED IN - Show user menu
         <>
           {/* Optional: Show user email */}
-          <div className="px-4 py-2 text-xs text-gray-500 border-b border-gray-100">
+          <div className="px-4 py-2 text-xs text-gray-500 border-b border-dark.border dark:text-dark.muted">
             {localStorage.getItem('userEmail')}
           </div>
           
           <Link 
             to="/profile" 
-            className="block px-4 py-2 hover:bg-gray-50" 
+            className="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-dark.border dark:text-light.text" 
             onClick={() => setShowProfile(false)}
           >
             My Profile
@@ -148,13 +183,13 @@ export default function Navbar() {
           
           <Link 
             to="/order" 
-            className="block px-4 py-2 hover:bg-gray-50" 
+            className="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-dark.border dark:text-light.text" 
             onClick={() => setShowProfile(false)}
           >
             Orders
           </Link>
           
-          <hr className="my-1 border-gray-200" />
+          <hr className="my-1 border-dark.border" />
           
           <button 
             onClick={() => {
@@ -166,7 +201,7 @@ export default function Navbar() {
               setShowProfile(false);
               navigate('/');
             }}
-            className="w-full text-left px-4 py-2 hover:bg-gray-50 text-red-500 font-medium"
+            className="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-dark.border text-red-500 font-medium"
           >
             Logout
           </button>
@@ -176,13 +211,13 @@ export default function Navbar() {
         <>
           <Link 
             to="/login" 
-            className="block px-4 py-2 hover:bg-gray-50" 
+            className="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-dark.border dark:text-light.text" 
             onClick={() => setShowProfile(false)}
           >
             Login
           </Link>
           
-         
+          
         </>
       )}
     </div>
@@ -194,7 +229,7 @@ export default function Navbar() {
             to="/cart" 
             className="relative hover:scale-110 transition-transform duration-200 cart-icon-animate"
           >
-            <img src={assets.cart_icon} alt="cart" className="w-5" />
+            <img src={assets.cart_icon} alt="cart" className="navbar-icon w-5" />
             {cartCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-medium">
                 {cartCount}
@@ -207,7 +242,7 @@ export default function Navbar() {
                 onClick={() => setShowMenu(true)} 
                 className="md:hidden hover:scale-110 transition-transform duration-200"
               >
-                <img src={assets.menu_icon} alt="menu" className="w-6" />
+                <img src={assets.menu_icon} alt="menu" className="navbar-icon w-6" />
               </button>
             </div>
           </div>
@@ -228,7 +263,7 @@ export default function Navbar() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search for products..."
-                className="w-full px-5 py-3 pr-12 border-2 border-gray-200 rounded-full text-base focus:outline-none focus:border-black transition-colors duration-200"
+                className="w-full px-5 py-3 pr-12 border-2 border-gray-200 dark:border-dark.border rounded-full text-base dark:text-light.text focus:outline-none focus:border-black transition-colors duration-200 placeholder:text-gray-400 dark:placeholder:text-dark.muted"
                 autoFocus
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center">
@@ -236,7 +271,7 @@ export default function Navbar() {
                   type="submit"
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 mr-1"
                 >
-                  <img src={assets.search_icon} alt="search" className="w-5" />
+                  <img src={assets.search_icon} alt="search" className="navbar-icon w-5" />
                 </button>
                 <button
                   type="button"
@@ -282,7 +317,7 @@ export default function Navbar() {
             className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50" 
             onClick={() => setShowMenu(false)}
           ></div>
-          <div className="fixed top-0 right-0 h-full w-72 bg-white shadow-xl z-50">
+          <div className="fixed top-0 right-0 h-full w-72 bg-white dark:bg-dark.bg shadow-xl z-50">
             <div className="flex justify-between items-center px-6 py-4 border-b">
               <h2 className="text-lg font-semibold">Menu</h2>
               <button 
@@ -299,8 +334,8 @@ export default function Navbar() {
                 to="/" 
                 onClick={() => setShowMenu(false)} 
                 className={({ isActive }) =>
-                  `py-3 px-6 hover:bg-gray-50 transition-colors duration-200 ${
-                    isActive ? "bg-gray-100 font-medium" : ""
+                  `py-3 px-6 hover:bg-gray-50 dark:hover:bg-dark.border transition-colors duration-200 ${
+                    isActive ? "bg-gray-100 dark:bg-dark.border font-medium" : ""
                   }`
                 }
               >
@@ -310,8 +345,8 @@ export default function Navbar() {
                 to="/collection" 
                 onClick={() => setShowMenu(false)} 
                 className={({ isActive }) =>
-                  `py-3 px-6 hover:bg-gray-50 transition-colors duration-200 ${
-                    isActive ? "bg-gray-100 font-medium" : ""
+                  `py-3 px-6 hover:bg-gray-50 dark:hover:bg-dark.border transition-colors duration-200 ${
+                    isActive ? "bg-gray-100 dark:bg-dark.border font-medium" : ""
                   }`
                 }
               >
@@ -321,8 +356,8 @@ export default function Navbar() {
                 to="/about" 
                 onClick={() => setShowMenu(false)} 
                 className={({ isActive }) =>
-                  `py-3 px-6 hover:bg-gray-50 transition-colors duration-200 ${
-                    isActive ? "bg-gray-100 font-medium" : ""
+                  `py-3 px-6 hover:bg-gray-50 dark:hover:bg-dark.border transition-colors duration-200 ${
+                    isActive ? "bg-gray-100 dark:bg-dark.border font-medium" : ""
                   }`
                 }
               >
@@ -332,8 +367,8 @@ export default function Navbar() {
                 to="/contact" 
                 onClick={() => setShowMenu(false)} 
                 className={({ isActive }) =>
-                  `py-3 px-6 hover:bg-gray-50 transition-colors duration-200 ${
-                    isActive ? "bg-gray-100 font-medium" : ""
+                  `py-3 px-6 hover:bg-gray-50 dark:hover:bg-dark.border transition-colors duration-200 ${
+                    isActive ? "bg-gray-100 dark:bg-dark.border font-medium" : ""
                   }`
                 }
               >
@@ -344,9 +379,9 @@ export default function Navbar() {
           <Link
             to="/profile"
             onClick={() => setShowMenu(false)}
-            className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+            className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-dark.panel rounded-lg hover:bg-gray-100 dark:hover:bg-dark.border transition-colors duration-200"
           >
-            <img src={assets.profile_icon} alt="profile" className="w-5 h-5" />
+            <img src={assets.profile_icon} alt="profile" className="navbar-icon w-5 h-5" />
             <span>My Account</span>
           </Link>
         </div>

@@ -1105,7 +1105,7 @@ export default function ChatbotButton() {
             )}
 
             <div
-              className="relative grid h-[72px] w-[72px] place-items-center rounded-full bg-black text-white shadow-[0_12px_32px_rgba(0,0,0,0.35)] ring-1 ring-black/10 transition-transform duration-300 group-hover:scale-105"
+              className="chat-launcher relative grid h-[72px] w-[72px] place-items-center rounded-full bg-black text-white shadow-[0_12px_32px_rgba(0,0,0,0.35)] ring-1 ring-black/10 transition-transform duration-300 group-hover:scale-105"
               style={{ transition: dragging ? 'none' : 'transform 300ms ease' }}
             >
               <span className="transition-transform duration-300" style={{ animation: 'bounceIn .3s ease-out' }}>

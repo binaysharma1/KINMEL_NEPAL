@@ -131,7 +131,7 @@ export default function ContactUs() {
         {/* Curved bottom */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-            <path d="M0 100L60 91.7C120 83.3 240 66.7 360 66.7C480 66.7 600 83.3 720 91.7C840 100 960 100 1080 91.7C1200 83.3 1320 66.7 1380 58.3L1440 50V100H0Z" fill="white"/>
+            <path d="M0 100L60 91.7C120 83.3 240 66.7 360 66.7C480 66.7 600 83.3 720 91.7C840 100 960 100 1080 91.7C1200 83.3 1320 66.7 1380 58.3L1440 50V100H0Z" fill="white" className="fill-white dark:fill-[#0b1220]"/>
           </svg>
         </div>
       </div>

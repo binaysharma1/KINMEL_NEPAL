@@ -88,7 +88,3 @@ Seed demo products: `cd Backend && node seedProducts.js`
 
 Branches per feature, pull requests into `main`. See open PRs for the
 current convention.
-
-## License
-
-MIT (or your chosen license — add a `LICENSE` file to make this binding).

@@ -1,4 +1,5 @@
 import { Routes, Route ,BrowserRouter} from "react-router-dom";
+import { useEffect } from 'react';
 
 // // Import pages
 import Cart from "./pages/Cart.jsx";
@@ -22,6 +23,18 @@ export const backendUrl = import.meta.env.VITE_BACKEND_URL ;
 
 
 export default function App() {
+  /* Initialize dark mode from localStorage / system preference on mount */
+  useEffect(() => {
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = saved === 'dark' || (!saved && prefersDark);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
   return (
     <div className="px-4 max-w-[2560px] mx-auto px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 ">
       
